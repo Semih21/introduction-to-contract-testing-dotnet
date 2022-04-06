@@ -291,3 +291,6 @@ build
 
 # SpecFlow auto generated files
 TestProject.OpenSDK.SpecFlowExamples/SpecFlow
+
+# CDCT pacts
+**/pacts/
