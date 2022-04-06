@@ -5,7 +5,7 @@ using Xunit;
 
 namespace CustomerConsumer.Tests
 {
-    public class AddressApiConsumerTests : IClassFixture<ConsumerAddressApiPact>
+    public class AddressApiConsumerTests : IClassFixture<CustomerConsumerAddressApiPact>
     {
         private readonly IMockProviderService _mockProviderService;
         private readonly string _mockProviderServiceBaseUri;
@@ -19,7 +19,7 @@ namespace CustomerConsumer.Tests
         private readonly string state = "Tennessee";
         private readonly string country = "United States";
 
-        public AddressApiConsumerTests(ConsumerAddressApiPact data)
+        public AddressApiConsumerTests(CustomerConsumerAddressApiPact data)
         {
             _mockProviderService = data.MockProviderService;
             _mockProviderServiceBaseUri = data.MockProviderServiceBaseUri;

@@ -4,7 +4,7 @@ using PactNet.Models;
 
 namespace CustomerConsumer.Tests
 {
-    public class ConsumerAddressApiPact : IDisposable
+    public class CustomerConsumerAddressApiPact : IDisposable
     {
         public IPactBuilder PactBuilder { get; }
         public IMockProviderService MockProviderService { get; }
@@ -12,7 +12,7 @@ namespace CustomerConsumer.Tests
         public int MockServerPort => 9876;
         public string MockProviderServiceBaseUri => $"http://localhost:{MockServerPort}";
 
-        public ConsumerAddressApiPact()
+        public CustomerConsumerAddressApiPact()
         {
             PactBuilder = new PactBuilder(new PactConfig
             {
