@@ -40,5 +40,16 @@ namespace AddressProvider.Controllers
                 Country = "United States"
             };
         }
+
+        [HttpDelete("/address/{addressId}")]
+        public ActionResult DeleteAddressForId(string addressId)
+        {
+            if (addressId.ToLower().Equals("this_is_not_a_valid_address_id"))
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
     }
 }
