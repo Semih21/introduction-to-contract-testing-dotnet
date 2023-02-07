@@ -1,4 +1,5 @@
-﻿using PactNet.Matchers;
+﻿using OrderConsumer.Models;
+using PactNet.Matchers;
 using PactNet.Mocks.MockHttpService;
 using PactNet.Mocks.MockHttpService.Models;
 using Xunit;
@@ -30,10 +31,10 @@ namespace OrderConsumer.Tests
         public async Task GetAddressById_WhenTheAddressExists_ReturnsAddress()
         {
             //Arrange
-            var addressIdRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+            string addressIdRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
             
-            _mockProviderService.Given(string.Format("GET: there is address data for address id {0}", addressId))
-                .UponReceiving(string.Format("a request to retrieve address data for address id {0}", addressId))
+            _mockProviderService.Given($"GET: there is address data for address id {addressId}")
+                .UponReceiving($"a request to retrieve address data for address id {addressId}")
                 .With(new ProviderServiceRequest
                 {
                     Method = HttpVerb.Get,
@@ -63,10 +64,10 @@ namespace OrderConsumer.Tests
                     }
                 });
 
-            var consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
+            AddressServiceClient consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
 
             //Act
-            var result = await consumer.GetAddressById(addressId);
+            Address result = await consumer.GetAddressById(addressId);
 
             //Assert
             Assert.Equal(addressId, result.Id.ToString());
@@ -85,9 +86,10 @@ namespace OrderConsumer.Tests
         public async Task GetAddressById_WhenTheAddressDoesNotExist_ReturnsHttp404()
         {
             //Arrange
-            var unknownAddressId = "00000000-0000-0000-0000-000000000000";
-            _mockProviderService.Given(string.Format("GET: there is no address data for address id {0}", unknownAddressId))
-                .UponReceiving(string.Format("a request to retrieve address data for address id {0}", unknownAddressId))
+            string unknownAddressId = "00000000-0000-0000-0000-000000000000";
+
+            _mockProviderService.Given($"GET: there is no address data for address id {unknownAddressId}")
+                .UponReceiving($"a request to retrieve address data for address id {unknownAddressId}")
                 .With(new ProviderServiceRequest
                 {
                     Method = HttpVerb.Get,
@@ -102,7 +104,7 @@ namespace OrderConsumer.Tests
                     Status = 404
                 });
 
-            var consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
+            AddressServiceClient consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
 
             //Act //Assert
             await Assert.ThrowsAnyAsync<Exception>(() => consumer.GetAddressById(unknownAddressId));
@@ -114,9 +116,10 @@ namespace OrderConsumer.Tests
         public async Task GetAddressById_WhenTheAddressIsInvalid_ReturnsHttp400()
         {
             //Arrange
-            var invalidAddressId = "this_is_not_a_valid_address_id";
-            _mockProviderService.Given(string.Format("GET: the address id {0} is invalid", invalidAddressId))
-                .UponReceiving(string.Format("a request to retrieve address data for address id {0}", invalidAddressId))
+            string invalidAddressId = "this_is_not_a_valid_address_id";
+
+            _mockProviderService.Given($"GET: the address id {invalidAddressId} is invalid")
+                .UponReceiving($"a request to retrieve address data for address id {invalidAddressId}")
                 .With(new ProviderServiceRequest
                 {
                     Method = HttpVerb.Get,
@@ -131,7 +134,7 @@ namespace OrderConsumer.Tests
                     Status = 400
                 });
 
-            var consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
+            AddressServiceClient consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
 
             //Act //Assert
             await Assert.ThrowsAnyAsync<Exception>(() => consumer.GetAddressById(invalidAddressId));
@@ -143,10 +146,10 @@ namespace OrderConsumer.Tests
         public async Task DeleteAddressById_WhenTheAddressExists_ReturnsHttp204()
         {
             //Arrange
-            var addressIdRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+            string addressIdRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
-            _mockProviderService.Given(string.Format("DELETE: there is address data for address id {0}", addressId))
-                .UponReceiving(string.Format("a request to delete address data for address id {0}", addressId))
+            _mockProviderService.Given($"DELETE: there is address data for address id {addressId}")
+                .UponReceiving($"a request to delete address data for address id {addressId}")
                 .With(new ProviderServiceRequest
                 {
                     Method = HttpVerb.Delete,
@@ -157,7 +160,7 @@ namespace OrderConsumer.Tests
                     Status = 204
                 });
 
-            var consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
+            AddressServiceClient consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
 
             //Act
             await consumer.DeleteAddressById(addressId);
@@ -169,9 +172,10 @@ namespace OrderConsumer.Tests
         public async Task DeleteAddressById_WhenTheAddressIsInvalid_ReturnsHttp400()
         {
             //Arrange
-            var invalidAddressId = "this_is_not_a_valid_address_id";
-            _mockProviderService.Given(string.Format("DELETE: the address id {0} is invalid", invalidAddressId))
-                .UponReceiving(string.Format("a request to delete address data for address id {0}", invalidAddressId))
+            string invalidAddressId = "this_is_not_a_valid_address_id";
+
+            _mockProviderService.Given($"DELETE: the address id {invalidAddressId} is invalid")
+                .UponReceiving($"a request to delete address data for address id {invalidAddressId}")
                 .With(new ProviderServiceRequest
                 {
                     Method = HttpVerb.Delete,
@@ -182,7 +186,7 @@ namespace OrderConsumer.Tests
                     Status = 400
                 });
 
-            var consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
+            AddressServiceClient consumer = new AddressServiceClient(_mockProviderServiceBaseUri);
 
             //Act //Assert
             await Assert.ThrowsAnyAsync<Exception>(() => consumer.DeleteAddressById(invalidAddressId));
